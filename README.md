@@ -10,9 +10,10 @@ Maquetación de la página de inicio de **LUMINA**, una plataforma de directos, 
 |---|---|
 | [`index.html`](index.html) · Inicio | Directo destacado, rejilla de directos con filtro por categoría y búsqueda, canales seguidos, llamada al registro y preguntas frecuentes. |
 | [`login.html`](login.html) · Acceso | Tarjeta con pestañas **Iniciar sesión / Registrarse** (`login.html#registro` abre directamente el registro). Al iniciar sesión se redirige al perfil. |
+| [`directo.html`](directo.html) · Directo | Se abre al pulsar cualquier directo (`directo.html?canal=kraven`). Reproductor con pausa, silencio, volumen y pantalla completa; espectadores y tiempo en directo que se actualizan solos; botón **Seguir**, **Compartir** (copia el enlace) y **chat en vivo** con mensajes simulados y envío propio validado. Debajo, *Más directos* generados con JS. |
 | [`perfil.html`](perfil.html) · Perfil | Avatar, nombre, biografía y estadísticas (seguidores, seguidos, directos), botón **Empezar directo**, formulario **Editar perfil**, canales seguidos, directos anteriores y notificaciones. |
 
-Las tres comparten la misma cabecera (con menú hamburguesa, buscador y conmutador de tema), el mismo pie y un único `script.js`.
+Las cuatro comparten la misma cabecera (con menú hamburguesa, buscador y conmutador de tema), el mismo pie y un único `script.js`.
 
 **Flujo:** registrarse → la pestaña pasa a *Iniciar sesión* con el email ya escrito → iniciar sesión → el perfil muestra el nombre y el email guardados (`localStorage`). *Cerrar sesión* borra esos datos.
 
@@ -24,7 +25,7 @@ Las tres comparten la misma cabecera (con menú hamburguesa, buscador y conmutad
 | Validación de formularios | Login, registro y edición de perfil con atributos HTML5 (`required`, `type="email"`, `minlength`, `maxlength`, `pattern`) + JS: clase `was-validated`, comprobación de que las contraseñas coinciden (`setCustomValidity`), foco en el primer error y aviso (*toast*) al enviar. |
 | Modo claro / oscuro | Botón sol/luna que alterna `data-bs-theme` en `<html>`. Los colores salen de un mapa Sass que genera *custom properties* por tema. La preferencia se guarda en `localStorage` (vale para las tres páginas) y, la primera vez, se respeta `prefers-color-scheme`. |
 | Grid de 12 columnas | Columna principal `col-lg-9` + barra lateral `col-lg-3`; tarjetas con `row-cols-1 row-cols-sm-2 row-cols-xl-3`; login en `col-lg-5` + `col-lg-6`. Diseño *mobile-first*. |
-| Interactividad del DOM | Filtro de directos y búsqueda (también desde otras páginas con `index.html?q=`), mostrar/ocultar contraseña, edición del perfil que actualiza el nombre, las iniciales del avatar y la biografía, contador de caracteres y botón de directo que cambia de estado. |
+| Interactividad del DOM | Página de directo que se rellena según el canal de la URL, chat que añade mensajes con `createElement`, controles del reproductor y botón Seguir; filtro de directos y búsqueda (también desde otras páginas con `index.html?q=`), mostrar/ocultar contraseña, edición del perfil que actualiza el nombre, las iniciales del avatar y la biografía, contador de caracteres y botón de directo que cambia de estado. |
 | Componentes Bootstrap | Navbar, Nav pills (tabs), Collapse, Accordion, Toast, Forms, Buttons, adaptados con la identidad corporativa. |
 
 ## Identidad visual (UI Kit de Figma)
@@ -45,6 +46,7 @@ Las tres comparten la misma cabecera (con menú hamburguesa, buscador y conmutad
 lumina/
 ├── index.html                  ← Página principal
 ├── login.html                  ← Inicio de sesión y registro
+├── directo.html                ← Vista de un directo (reproductor + chat)
 ├── perfil.html                 ← Perfil de usuario
 ├── css/
 │   └── style.css              ← CSS compilado (enlazado en el HTML)
@@ -52,7 +54,7 @@ lumina/
 │   ├── bootstrap.bundle.js     ← Bootstrap + Popper (versión legible)
 │   ├── bootstrap.bundle.min.js ← Bootstrap + Popper (minificado, el que se usa)
 │   ├── theme-init.js           ← Aplica el tema guardado antes de pintar
-│   └── script.js               ← Tema, menú, filtros, login/registro y perfil (por módulos)
+│   └── script.js               ← Tema, menú, filtros, login/registro, perfil y directo (por módulos)
 ├── scss/
 │   ├── style.scss              ← Punto de entrada: importa todo en orden
 │   ├── abstracts/
@@ -72,7 +74,8 @@ lumina/
 │   │   └── _accordion.scss     ← Override del acordeón de Bootstrap
 │   ├── pages/
 │   │   ├── _login.scss         ← Presentación de la página de acceso
-│   │   └── _perfil.scss        ← Cabecera del perfil, estadísticas y edición
+│   │   ├── _perfil.scss        ← Cabecera del perfil, estadísticas y edición
+│   │   └── _directo.scss       ← Reproductor, información del canal, chat y animaciones
 │   └── vendor/bootstrap/       ← Fuentes Sass de Bootstrap 5.3.8 (sin modificar)
 ├── docs/capturas/              ← Capturas para este README
 └── package.json                ← Scripts de compilación con Dart Sass
@@ -111,7 +114,7 @@ Otros scripts: `npm run watch` (recompila al guardar) y `npm run build:min` (gen
 
 | Validador | Resultado |
 |---|---|
-| [Nu HTML Checker](https://validator.w3.org/nu/) (`index.html`, `login.html`, `perfil.html`) | **0 errores, 0 avisos** en las tres páginas |
+| [Nu HTML Checker](https://validator.w3.org/nu/) (`index.html`, `login.html`, `perfil.html`, `directo.html`) | **0 errores, 0 avisos** en las cuatro páginas |
 | [CSS Validator](https://jigsaw.w3.org/css-validator/) (`css/style.css`, perfil CSS3 + SVG) | **0 errores**. Los avisos son extensiones de navegador (`-webkit-`, `-moz-`) y variables CSS que genera Bootstrap, no errores. |
 
 <!-- Sustituye estas rutas por tus propias capturas del validador -->
@@ -124,9 +127,13 @@ Otros scripts: `npm run watch` (recompila al guardar) y `npm run build:min` (gen
 |---|---|---|
 | ![Modo claro](docs/capturas/escritorio-claro.jpg) | ![Página de acceso](docs/capturas/login.jpg) | ![Página de perfil](docs/capturas/perfil.jpg) |
 
-| Móvil · menú desplegado | Móvil · perfil |
-|---|---|
-| ![Menú móvil](docs/capturas/movil-menu.jpg) | ![Perfil en móvil](docs/capturas/perfil-movil.jpg) |
+| Directo |
+|---|
+| ![Página de directo](docs/capturas/directo.jpg) |
+
+| Móvil · menú desplegado | Móvil · perfil | Móvil · directo |
+|---|---|---|
+| ![Menú móvil](docs/capturas/movil-menu.jpg) | ![Perfil en móvil](docs/capturas/perfil-movil.jpg) | ![Directo en móvil](docs/capturas/directo-movil.jpg) |
 
 ## Tecnologías
 
