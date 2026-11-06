@@ -7,9 +7,23 @@
 //   3. Filtro y búsqueda de directos  (index.html)
 //   4. Login y registro               (login.html)
 //   5. Perfil editable                (perfil.html)
+//   6. Ver un directo                 (directo.html?canal=...)
 // =============================================================
 
 const USER_KEY = 'lumina-user';
+
+// Datos de los canales en directo (en una web real vendrían de una API)
+const STREAMS = {
+  novax:   { title: 'Ranked hasta diamante', streamer: 'NovaX', category: 'Juegos', viewers: 2140, followers: 18420, thumb: 'violeta' },
+  kraven:  { title: 'Terror a oscuras: parte 3', streamer: 'Kraven', category: 'Juegos', viewers: 5812, followers: 24310, thumb: 'niebla' },
+  luna:    { title: 'Paseo nocturno por la ciudad', streamer: 'Luna', category: 'Charlas', viewers: 940, followers: 7350, thumb: 'atardecer' },
+  djbrisa: { title: 'Sesión lo-fi para estudiar', streamer: 'DJ Brisa', category: 'Música', viewers: 3320, followers: 15900, thumb: 'lima' },
+  codeowl: { title: 'Programamos un juego en vivo', streamer: 'CodeOwl', category: 'Charlas', viewers: 1205, followers: 9880, thumb: 'oceano' },
+  aria:    { title: 'Guitarra acústica y peticiones', streamer: 'Aria', category: 'Música', viewers: 780, followers: 5120, thumb: 'grafito' },
+};
+
+// Formato de números en español (5812 -> "5.812")
+const formatNumber = (n) => n.toLocaleString('es-ES');
 
 // Lectura y escritura segura del usuario en localStorage
 const loadUser = () => {
@@ -60,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initStreamFilter();
   initAuth();
   initProfile();
+  initWatch();
 });
 
 // ---------- 1. Modo claro / oscuro ----------
@@ -318,4 +333,176 @@ function initProfile() {
       // Nada que borrar
     }
   });
+}
+
+// ---------- 6. Ver un directo ----------
+function initWatch() {
+  const player = document.getElementById('player');
+  if (!player) {
+    return;
+  }
+
+  // Canal elegido en la URL (directo.html?canal=kraven)
+  const id = new URLSearchParams(window.location.search).get('canal');
+  const stream = STREAMS[id] || STREAMS.kraven;
+  const screen = document.getElementById('playerScreen');
+
+  // Rellena la página con los datos del canal
+  document.title = `${stream.title} · ${stream.streamer} · LUMINA`;
+  screen.className = `player__screen player__screen--${stream.thumb}`;
+  document.getElementById('streamTitle').textContent = stream.title;
+  document.getElementById('streamStreamer').textContent = stream.streamer;
+  document.getElementById('streamCategory').textContent = stream.category;
+  document.getElementById('streamAvatar').textContent = initials(stream.streamer);
+
+  // Espectadores que varían un poco cada pocos segundos
+  const viewerEl = document.getElementById('viewerCount');
+  let viewers = stream.viewers;
+  viewerEl.textContent = formatNumber(viewers);
+  setInterval(() => {
+    viewers = Math.max(1, viewers + Math.round((Math.random() - 0.45) * viewers * 0.02));
+    viewerEl.textContent = formatNumber(viewers);
+  }, 3000);
+
+  // Tiempo en directo
+  const uptimeEl = document.getElementById('uptime');
+  let seconds = 5077;
+  const pad = (n) => String(n).padStart(2, '0');
+  setInterval(() => {
+    seconds += 1;
+    uptimeEl.textContent = `${pad(Math.floor(seconds / 3600))}:${pad(Math.floor(seconds / 60) % 60)}:${pad(seconds % 60)}`;
+  }, 1000);
+
+  // ----- Controles del reproductor -----
+  const playBtn = document.getElementById('playBtn');
+  const pausedMsg = document.getElementById('pausedMsg');
+  playBtn.addEventListener('click', () => {
+    const playing = playBtn.getAttribute('aria-pressed') !== 'true';
+    playBtn.setAttribute('aria-pressed', String(playing));
+    playBtn.setAttribute('aria-label', playing ? 'Pausar' : 'Reproducir');
+    player.classList.toggle('is-paused', !playing);
+    pausedMsg.hidden = playing;
+  });
+
+  const muteBtn = document.getElementById('muteBtn');
+  const volume = document.getElementById('volumeRange');
+  const setMuted = (muted) => {
+    muteBtn.setAttribute('aria-pressed', String(muted));
+    muteBtn.setAttribute('aria-label', muted ? 'Activar sonido' : 'Silenciar');
+    player.classList.toggle('is-muted', muted);
+  };
+  muteBtn.addEventListener('click', () => {
+    const muted = muteBtn.getAttribute('aria-pressed') !== 'true';
+    setMuted(muted);
+    if (!muted && Number(volume.value) === 0) {
+      volume.value = 50;
+    }
+  });
+  volume.addEventListener('input', () => setMuted(Number(volume.value) === 0));
+
+  document.getElementById('fullscreenBtn').addEventListener('click', () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else if (player.requestFullscreen) {
+      player.requestFullscreen();
+    }
+  });
+
+  // ----- Seguir al canal -----
+  const followBtn = document.getElementById('followBtn');
+  const followText = document.getElementById('followText');
+  const followerEl = document.getElementById('followerCount');
+  let followers = stream.followers;
+  followerEl.textContent = formatNumber(followers);
+  followBtn.addEventListener('click', () => {
+    const following = followBtn.getAttribute('aria-pressed') !== 'true';
+    followBtn.setAttribute('aria-pressed', String(following));
+    followBtn.classList.toggle('is-following', following);
+    followText.textContent = following ? 'Siguiendo' : 'Seguir';
+    followers += following ? 1 : -1;
+    followerEl.textContent = formatNumber(followers);
+    showToast(following ? `Ahora sigues a ${stream.streamer}.` : `Has dejado de seguir a ${stream.streamer}.`);
+  });
+
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    const url = window.location.href;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(
+        () => showToast('Enlace del directo copiado.'),
+        () => showToast(url),
+      );
+    } else {
+      showToast(url);
+    }
+  });
+
+  // ----- Chat en vivo (simulado) -----
+  const chatList = document.getElementById('chatList');
+  const chatLog = document.getElementById('chatLog');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const MAX_MESSAGES = 60;
+  const fakeUsers = ['pixelfan', 'noctambulo', 'sara_gg', 'tioMario', 'lumi_lover', 'kaiser', 'neon_cat', 'ruta66'];
+  const fakeMessages = ['¡Qué buen directo!', 'Hola a todos 👋', 'JAJAJA', 'Eso ha sido increíble', '¿Cuándo es el próximo?', 'Saludos desde Alcalá', 'GG', 'Me encanta este canal', 'Subid el volumen 🔊', '¡Vamos!'];
+
+  const addMessage = (author, text, own = false) => {
+    const item = document.createElement('li');
+    item.className = own ? 'chat__msg chat__msg--own' : 'chat__msg';
+    const name = document.createElement('strong');
+    name.className = 'chat__author';
+    name.textContent = `${author}:`;
+    item.append(name, ` ${text}`);
+    chatList.append(item);
+    while (chatList.children.length > MAX_MESSAGES) {
+      chatList.firstElementChild.remove();
+    }
+    chatLog.scrollTop = chatLog.scrollHeight;
+  };
+
+  const random = (list) => list[Math.floor(Math.random() * list.length)];
+  setInterval(() => {
+    if (!player.classList.contains('is-paused')) {
+      addMessage(random(fakeUsers), random(fakeMessages));
+    }
+  }, 2500);
+
+  chatForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    chatInput.value = chatInput.value.trim();
+    if (!validateForm(chatForm)) {
+      return;
+    }
+    addMessage(loadUser().name || 'Invitado', chatInput.value, true);
+    chatForm.reset();
+    chatForm.classList.remove('was-validated');
+    chatInput.focus();
+  });
+
+  // ----- Más directos: tarjetas creadas a partir de los datos -----
+  const more = document.getElementById('moreStreams');
+  Object.entries(STREAMS)
+    .filter(([, s]) => s !== stream)
+    .slice(0, 3)
+    .forEach(([key, s]) => {
+      const col = document.createElement('div');
+      col.className = 'col';
+      col.innerHTML = `
+        <article class="stream-card">
+          <a class="stream-card__link" href="directo.html?canal=${key}">
+            <div class="stream-card__thumb stream-card__thumb--${s.thumb}">
+              <span class="live-badge live-badge--sm">En directo</span>
+            </div>
+            <div class="stream-card__body">
+              <span class="avatar avatar--sm" aria-hidden="true">${initials(s.streamer)}</span>
+              <div>
+                <h3 class="stream-card__title"></h3>
+                <p class="stream-card__meta"></p>
+              </div>
+            </div>
+          </a>
+        </article>`;
+      col.querySelector('.stream-card__title').textContent = s.title;
+      col.querySelector('.stream-card__meta').textContent = `${s.streamer} · ${formatNumber(s.viewers)} espectadores`;
+      more.append(col);
+    });
 }
