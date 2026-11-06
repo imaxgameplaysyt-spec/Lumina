@@ -1,0 +1,135 @@
+// =============================================================
+// _sidebar.scss
+// Barra lateral: canales seguidos y notificaciones.
+// En móvil la lista de seguidos se desplaza en horizontal.
+// =============================================================
+
+.sidebar {
+  display: grid;
+  // minmax(0, 1fr) evita que la lista con scroll horizontal ensanche la página
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+
+  @include respond-to(lg) {
+    position: sticky;
+    top: $lm-header-height + 1.5rem;
+  }
+
+  &__block {
+    padding: 1.25rem;
+    border: 1px solid var(--lm-border);
+    border-radius: $lm-radius;
+    background-color: var(--lm-surface);
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  &__text {
+    font-size: .9rem;
+    color: var(--lm-text-muted);
+    word-break: break-word;
+  }
+
+  // Bloque de llamada a la acción con borde de acento
+  &__block--cta {
+    border-color: var(--lm-accent);
+  }
+}
+
+.follow-list {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0 .25rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+
+  // En escritorio pasa a ser una columna vertical
+  @include respond-to(lg) {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: .35rem;
+    min-width: 4.5rem;
+    scroll-snap-align: start;
+    text-align: center;
+
+    @include respond-to(lg) {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      column-gap: .75rem;
+      row-gap: 0;
+      text-align: left;
+
+      .avatar {
+        grid-row: span 2;
+      }
+    }
+  }
+
+  &__name {
+    font-size: .85rem;
+    font-weight: 600;
+  }
+
+  &__status {
+    font-size: .7rem;
+    color: var(--lm-text-muted);
+  }
+
+  // Modificador: rejilla de avatares (página de perfil)
+  &--grid {
+    flex-wrap: wrap;
+    overflow: visible;
+
+    @include respond-to(lg) {
+      flex-direction: row;
+      gap: 1.5rem;
+    }
+
+    .follow-list__item {
+      @include respond-to(lg) {
+        display: flex;
+        text-align: center;
+      }
+    }
+  }
+
+  // Modificador: el canal está emitiendo
+  &__item--live {
+    .avatar {
+      box-shadow: 0 0 0 3px $lm-danger;
+    }
+
+    .follow-list__status {
+      color: $lm-danger;
+      font-weight: 600;
+    }
+  }
+}
+
+.notif-list {
+  display: grid;
+  gap: .9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    font-size: .875rem;
+  }
+}

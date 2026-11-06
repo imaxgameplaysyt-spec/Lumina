@@ -1,0 +1,23 @@
+// =============================================================
+// _themes.scss
+// Hoja de estilos alternativa: modo claro / modo oscuro.
+// Recorre el mapa $lm-themes y genera custom properties para
+// cada tema. El JS solo cambia el atributo data-bs-theme.
+// =============================================================
+
+@each $theme, $tokens in $lm-themes {
+  [data-bs-theme="#{$theme}"] {
+    @each $key, $value in $tokens {
+      --lm-#{$key}: #{$value};
+    }
+
+    color-scheme: $theme;
+  }
+}
+
+// Ajustes de Bootstrap específicos del modo oscuro
+[data-bs-theme="dark"] {
+  --bs-body-bg: #{$lm-abyss};
+  --bs-border-color: #{rgba($lm-lime, .35)};
+  --bs-emphasis-color: #{$lm-white};
+}

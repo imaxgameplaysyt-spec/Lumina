@@ -1,0 +1,23 @@
+// =============================================================
+// _accordion.scss
+// Override del acordeón de Bootstrap con la identidad LUMINA.
+// =============================================================
+
+.faq__accordion {
+  --bs-accordion-bg: var(--lm-surface);
+  --bs-accordion-color: var(--lm-text);
+  --bs-accordion-border-color: var(--lm-border);
+  --bs-accordion-btn-color: var(--lm-text);
+  --bs-accordion-active-color: var(--lm-accent);
+  --bs-accordion-active-bg: var(--lm-surface-alt);
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 .2rem #{$focus-ring-color};
+
+  .accordion-button {
+    font-weight: 600;
+    @include smooth(background-color, color);
+
+    &:hover {
+      color: var(--lm-accent);
+    }
+  }
+}

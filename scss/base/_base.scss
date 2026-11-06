@@ -1,0 +1,91 @@
+// =============================================================
+// _base.scss
+// Estilos globales del documento y utilidades propias.
+// =============================================================
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: $lm-header-height + 1rem;
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--lm-bg);
+  background-image: var(--lm-bg-gradient);
+  background-attachment: fixed;
+  color: var(--lm-text);
+  @include smooth(background-color, color);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--lm-text);
+}
+
+a {
+  color: var(--lm-accent);
+  @include focus-ring;
+}
+
+::selection {
+  background-color: $lm-lime;
+  color: $lm-graphite;
+}
+
+// Enlace "saltar al contenido" (accesibilidad por teclado)
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 2000;
+  padding: .5rem 1rem;
+  border-radius: $lm-radius-sm;
+  background-color: $lm-lime;
+  color: $lm-graphite;
+  font-weight: 600;
+
+  &:focus-visible {
+    top: 1rem;
+  }
+}
+
+.site-main {
+  padding-block: 1.5rem 3rem;
+
+  @include respond-to(lg) {
+    padding-block: 2rem 4rem;
+  }
+}
+
+// Cabecera de sección con título + acciones
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+
+  &__title {
+    margin-bottom: 0;
+    font-size: 1.35rem;
+
+    @include respond-to(md) {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.streams,
+.faq {
+  margin-top: 3rem;
+}
+
+.faq .section-head__title {
+  margin-bottom: 1.25rem;
+}

@@ -1,0 +1,221 @@
+// =============================================================
+// _cards.scss
+// Directo destacado (.hero), tarjetas de directo (.stream-card),
+// insignia "En directo" (.live-badge) y avatares (.avatar).
+// =============================================================
+
+// ---------- Directo destacado ----------
+.hero {
+  padding: 1.25rem;
+  border: 1px solid var(--lm-border);
+  border-radius: $lm-radius-lg;
+  background-color: var(--lm-surface);
+  box-shadow: var(--lm-shadow);
+
+  @include respond-to(lg) {
+    padding: 2rem;
+  }
+
+  // Enlace al directo destacado
+  &__player {
+    display: block;
+    position: relative;
+    @include smooth(transform, box-shadow);
+    @include focus-ring;
+
+    &:hover {
+      transform: scale(1.015);
+      box-shadow: 0 0 0 3px var(--lm-accent);
+    }
+    aspect-ratio: 16 / 9;
+    border-radius: $lm-radius;
+    background:
+      radial-gradient(circle at 30% 35%, rgba($lm-lime, .45) 0%, transparent 45%),
+      linear-gradient(135deg, $lm-teal 0%, $lm-abyss 100%);
+    overflow: hidden;
+  }
+
+  &__viewers {
+    position: absolute;
+    right: .75rem;
+    bottom: .75rem;
+    padding: .25rem .6rem;
+    border-radius: $lm-radius-sm;
+    background-color: rgba($lm-black, .7);
+    color: $lm-white;
+    font-size: .8rem;
+  }
+
+  &__kicker {
+    margin-bottom: .5rem;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--lm-accent);
+  }
+
+  &__title {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.15;
+  }
+
+  &__text {
+    color: var(--lm-text-muted);
+  }
+}
+
+// ---------- Insignia En directo ----------
+.live-badge {
+  position: absolute;
+  top: .75rem;
+  left: .75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .65rem;
+  border-radius: $lm-radius-sm;
+  background-color: $lm-danger;
+  color: $lm-white;
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+
+  &__icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &--sm {
+    top: .5rem;
+    left: .5rem;
+    padding: .2rem .5rem;
+    font-size: .65rem;
+  }
+}
+
+// ---------- Tarjeta de directo ----------
+.stream-card {
+  height: 100%;
+  border: 1px solid var(--lm-border);
+  border-radius: $lm-radius;
+  background-color: var(--lm-surface);
+  overflow: hidden;
+  @include lift;
+
+  &__link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: inherit;
+    }
+
+    &:focus-visible {
+      outline-offset: -3px;
+    }
+  }
+
+  &__thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background-color: #9a9a9a;
+
+    @each $name, $gradient in $lm-thumbs {
+      &--#{$name} {
+        background-image: $gradient;
+      }
+    }
+  }
+
+  // Icono de emisión de la esquina (como en el diseño de Figma)
+  &__live {
+    position: absolute;
+    right: .6rem;
+    bottom: .6rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: $lm-white;
+    @include smooth(transform);
+  }
+
+  // Duración de un directo ya emitido
+  &__duration {
+    position: absolute;
+    right: .5rem;
+    bottom: .5rem;
+    padding: .15rem .45rem;
+    border-radius: $lm-radius-sm;
+    background-color: rgba($lm-black, .75);
+    color: $lm-white;
+    font-size: .75rem;
+    font-weight: 600;
+  }
+
+  &:hover &__live {
+    transform: scale(1.15);
+  }
+
+  &__body {
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+    padding: .9rem 1rem 1rem;
+  }
+
+  &__title {
+    margin-bottom: .2rem;
+    font-family: $lm-font-body;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  &__meta {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--lm-text-muted);
+  }
+}
+
+.streams__empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--lm-text-muted);
+}
+
+// ---------- Avatar circular ----------
+.avatar {
+  @include circle(2.75rem);
+  border: 2px solid var(--lm-accent);
+  background-color: var(--lm-avatar-bg);
+  color: var(--lm-avatar-fg);
+  font-size: .8rem;
+  font-weight: 700;
+
+  &--sm {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: .7rem;
+  }
+
+  &--lg {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.1rem;
+  }
+
+  &--xl {
+    width: 7rem;
+    height: 7rem;
+    font-family: $lm-font-display;
+    font-size: 2rem;
+  }
+
+  // Aro rojo mientras el usuario emite en directo
+  &--live {
+    box-shadow: 0 0 0 4px $lm-danger;
+  }
+}

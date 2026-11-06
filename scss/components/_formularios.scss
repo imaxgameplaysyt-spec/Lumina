@@ -1,0 +1,132 @@
+// =============================================================
+// _formularios.scss
+// Tarjeta de acceso (login / registro) basada en el diseño de
+// Figma: tarjeta negra con borde lima e inputs contorneados.
+// Bloques BEM: .auth-card, .auth-form
+// =============================================================
+
+.auth-card {
+  padding: 1.5rem;
+  border: 1px solid var(--lm-accent);
+  border-radius: $lm-radius;
+  background-color: var(--lm-surface);
+  box-shadow: var(--lm-shadow);
+
+  @include respond-to(md) {
+    padding: 2.5rem;
+  }
+
+  &__title {
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  // Pestañas Iniciar sesión / Registrarse
+  &__tabs {
+    justify-content: center;
+    gap: .5rem;
+    margin-bottom: 1.75rem;
+
+    .nav-link {
+      border: 1px solid var(--lm-border);
+      color: var(--lm-text);
+      font-weight: 600;
+      @include smooth(background-color, color);
+      @include focus-ring;
+
+      &:hover {
+        color: var(--lm-accent);
+      }
+
+      &.active {
+        background-color: var(--lm-accent);
+        border-color: var(--lm-accent);
+        color: var(--lm-on-accent);
+      }
+    }
+  }
+}
+
+.auth-form {
+  .form-label {
+    color: var(--lm-accent);
+    font-weight: 500;
+  }
+
+  .form-text {
+    color: var(--lm-text-muted);
+  }
+
+  .form-control,
+  .form-select {
+    border: 1px solid var(--lm-accent);
+    background-color: transparent;
+    color: var(--lm-text);
+    @include smooth(border-color, box-shadow);
+
+    &::placeholder {
+      color: var(--lm-text-muted);
+      opacity: .8;
+    }
+
+    &:hover {
+      border-color: var(--lm-accent-strong);
+    }
+
+    &:focus {
+      border-color: var(--lm-accent);
+      box-shadow: 0 0 0 .2rem $focus-ring-color;
+    }
+
+    &.is-invalid {
+      border-color: $lm-danger;
+    }
+  }
+
+  // Botón para mostrar / ocultar la contraseña
+  &__reveal {
+    border: 1px solid var(--lm-accent);
+    border-left: 0;
+    color: var(--lm-accent);
+    @include focus-ring;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    &:hover,
+    &[aria-pressed="true"] {
+      background-color: var(--lm-accent);
+      color: var(--lm-on-accent);
+    }
+  }
+
+  .form-check-input {
+    border-color: var(--lm-accent);
+    background-color: transparent;
+    @include focus-ring;
+
+    &:checked {
+      background-color: var(--lm-accent);
+      border-color: var(--lm-accent);
+    }
+  }
+
+  .form-check-label {
+    color: var(--lm-text);
+  }
+
+  // Bordes del grupo de contraseña en rojo al fallar la validación
+  &.was-validated .input-group .form-control:invalid ~ .auth-form__reveal {
+    border-color: $lm-danger;
+  }
+}
+
+// Aviso de envío correcto
+.lumina-toast {
+  border: 1px solid var(--lm-accent);
+  background-color: var(--lm-surface);
+  color: var(--lm-text);
+}

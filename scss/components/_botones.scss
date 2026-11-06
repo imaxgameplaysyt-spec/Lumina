@@ -1,0 +1,172 @@
+// =============================================================
+// _botones.scss
+// Botones corporativos, botones de icono, chips de filtro y
+// conmutador de tema.
+// =============================================================
+
+// ---------- Botón principal (.btn-lumina) ----------
+.btn-lumina {
+  --bs-btn-padding-y: .7rem;
+  --bs-btn-padding-x: 1.5rem;
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-radius: #{$lm-radius-sm};
+  --bs-btn-color: #{$lm-graphite};
+  --bs-btn-bg: #{$lm-lime};
+  --bs-btn-border-color: #{$lm-lime};
+  --bs-btn-hover-color: #{$lm-graphite};
+  --bs-btn-hover-bg: #{$lm-lime-dark};
+  --bs-btn-hover-border-color: #{$lm-lime-dark};
+  --bs-btn-active-color: #{$lm-graphite};
+  --bs-btn-active-bg: #{$lm-lime-dark};
+  --bs-btn-active-border-color: #{$lm-lime-dark};
+  @include smooth(background-color, border-color, color, transform);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--lm-accent-strong);
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  // Icono dentro del botón
+  &__icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: .5rem;
+    vertical-align: -.2em;
+  }
+
+  // Botón de directo: rojo mientras se está emitiendo
+  &--live.is-live {
+    --bs-btn-color: #{$lm-white};
+    --bs-btn-bg: #{$lm-danger};
+    --bs-btn-border-color: #{$lm-danger};
+    --bs-btn-hover-color: #{$lm-white};
+    --bs-btn-hover-bg: #{$lm-danger-dark};
+    --bs-btn-hover-border-color: #{$lm-danger-dark};
+    --bs-btn-active-color: #{$lm-white};
+    --bs-btn-active-bg: #{$lm-danger-dark};
+  }
+
+  // Variante contorno (botón secundario)
+  &--outline {
+    --bs-btn-color: var(--lm-accent);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--lm-accent);
+    --bs-btn-hover-color: var(--lm-on-accent);
+    --bs-btn-hover-bg: var(--lm-accent);
+    --bs-btn-hover-border-color: var(--lm-accent);
+    --bs-btn-active-color: var(--lm-on-accent);
+    --bs-btn-active-bg: var(--lm-accent);
+  }
+}
+
+// En modo claro el botón principal pasa al teal para mejor contraste
+.btn-lumina:not(.btn-lumina--outline) {
+  @include theme(light) {
+    --bs-btn-color: #{$lm-white};
+    --bs-btn-bg: #{$lm-teal};
+    --bs-btn-border-color: #{$lm-teal};
+    --bs-btn-hover-color: #{$lm-white};
+    --bs-btn-hover-bg: #{$lm-abyss};
+    --bs-btn-hover-border-color: #{$lm-abyss};
+    --bs-btn-active-color: #{$lm-white};
+    --bs-btn-active-bg: #{$lm-abyss};
+  }
+}
+
+// ---------- Botón de icono circular (.icon-btn) ----------
+.icon-btn {
+  position: relative;
+  @include circle(2.75rem);
+  padding: 0;
+  border: 2px solid transparent;
+  background-color: transparent;
+  color: var(--lm-accent);
+  @include smooth(background-color, border-color, transform);
+  @include focus-ring;
+
+  &:hover {
+    border-color: var(--lm-accent);
+    color: var(--lm-accent);
+    transform: scale(1.06);
+  }
+
+  &__svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  &__badge {
+    position: absolute;
+    top: .1rem;
+    right: .1rem;
+    @include circle(1.1rem);
+    font-size: .7rem;
+    font-weight: 700;
+    background-color: $lm-danger;
+    color: $lm-white;
+  }
+}
+
+// ---------- Conmutador de tema ----------
+// En oscuro se muestra el sol (pasar a claro) y viceversa.
+.theme-toggle {
+  &__moon {
+    display: none;
+  }
+
+  @include theme(light) {
+    .theme-toggle__sun {
+      display: none;
+    }
+
+    .theme-toggle__moon {
+      display: block;
+    }
+  }
+}
+
+// ---------- Chips de filtro (UI Kit: Seleccionado / Sin seleccionar) ----------
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+
+  &__chip {
+    padding: .45rem 1rem;
+    border: 1px solid var(--lm-border);
+    border-radius: $lm-radius-sm;
+    background-color: var(--lm-chip-bg);
+    color: var(--lm-chip-fg);
+    font-size: .875rem;
+    font-weight: 500;
+    @include smooth(background-color, color, border-color);
+    @include focus-ring;
+
+    &:hover {
+      border-color: var(--lm-accent);
+    }
+
+    // Estado seleccionado: fondo claro y borde oscuro (como en el UI Kit)
+    &.is-active {
+      background-color: $lm-white;
+      border-color: $lm-graphite;
+      color: $lm-graphite;
+      font-weight: 700;
+
+      @include theme(light) {
+        background-color: $lm-graphite;
+        border-color: $lm-graphite;
+        color: $lm-white;
+      }
+    }
+  }
+}
