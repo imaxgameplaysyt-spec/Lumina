@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Perfil de usuario en LUMINA: seguidores, canales seguidos, directos anteriores y notificaciones.">
+  <meta name="theme-color" content="#0f2b31">
+  <title>Mi perfil · LUMINA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Seymour+One&amp;display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Aplica el tema guardado antes de pintar para evitar el parpadeo -->
+  <script src="js/theme-init.js"></script>
+</head>
+<body>
+  <!-- Sprite de iconos SVG reutilizables -->
+  <svg class="d-none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 21h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-live" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  <!-- ===== CABECERA ===== -->
+  <header class="site-header sticky-top">
+    <nav class="navbar navbar-expand-lg site-header__nav" aria-label="Navegación principal">
+      <div class="container-fluid">
+        <a class="navbar-brand site-header__brand" href="index.html">LUMINA</a>
+
+        <button class="navbar-toggler site-header__toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú de navegación">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+          <form class="site-search my-3 my-lg-0 mx-lg-4" role="search" action="index.html" method="get">
+            <label class="visually-hidden" for="buscador">Buscar directos</label>
+            <svg class="site-search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="form-control site-search__input" id="buscador" type="search" name="q" placeholder="Buscar directos o streamers" autocomplete="off">
+          </form>
+
+          <ul class="navbar-nav me-auto mb-3 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.html#directos">Directos</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="perfil.html">Perfil</a></li>
+            <li class="nav-item"><a class="nav-link" href="login.html">Acceso</a></li>
+          </ul>
+
+          <ul class="navbar-nav site-header__actions">
+            <li class="nav-item">
+              <a class="icon-btn" href="perfil.html#notificaciones" aria-label="Notificaciones (3 nuevas)">
+                <svg class="icon-btn__svg" aria-hidden="true"><use href="#i-bell"/></svg>
+                <span class="icon-btn__badge" aria-hidden="true">3</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="icon-btn" href="perfil.html" aria-label="Mi perfil">
+                <svg class="icon-btn__svg" aria-hidden="true"><use href="#i-user"/></svg>
+              </a>
+            </li>
+            <li class="nav-item">
+              <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-pressed="true" aria-label="Cambiar a modo claro">
+                <svg class="icon-btn__svg theme-toggle__sun" aria-hidden="true"><use href="#i-sun"/></svg>
+                <svg class="icon-btn__svg theme-toggle__moon" aria-hidden="true"><use href="#i-moon"/></svg>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== CONTENIDO PRINCIPAL ===== -->
+  <main id="contenido" class="site-main">
+    <div class="container-fluid">
+      <div class="row g-4">
+
+        <div class="col-12 col-lg-9">
+          <!-- Cabecera del perfil -->
+          <section class="profile" aria-labelledby="profileName">
+            <div class="profile__banner" aria-hidden="true"></div>
+            <div class="profile__body">
+              <span class="avatar avatar--xl profile__avatar" id="profileAvatar" aria-hidden="true">LU</span>
+
+              <div class="profile__info">
+                <h1 class="profile__name" id="profileName">luminauser</h1>
+                <p class="profile__handle">@<span id="profileHandle">luminauser</span></p>
+                <p class="profile__bio" id="profileBio">Streamer de juegos de terror y charlas nocturnas. ¡Bienvenido a mi canal!</p>
+              </div>
+
+              <ul class="profile__stats" aria-label="Estadísticas del canal">
+                <li class="profile__stat"><span class="profile__stat-value" id="statFollowers">0</span><span class="profile__stat-label">Seguidores</span></li>
+                <li class="profile__stat"><span class="profile__stat-value">5</span><span class="profile__stat-label">Seguidos</span></li>
+                <li class="profile__stat"><span class="profile__stat-value">3</span><span class="profile__stat-label">Directos</span></li>
+              </ul>
+
+              <div class="profile__actions">
+                <button class="btn btn-lumina btn-lumina--live" id="goLiveBtn" type="button" aria-pressed="false">
+                  <svg class="btn-lumina__icon" aria-hidden="true"><use href="#i-live"/></svg><span id="goLiveText">Empezar directo</span>
+                </button>
+                <button class="btn btn-lumina btn-lumina--outline" type="button" data-bs-toggle="collapse" data-bs-target="#editarPerfil" aria-expanded="false" aria-controls="editarPerfil">
+                  <svg class="btn-lumina__icon" aria-hidden="true"><use href="#i-settings"/></svg>Editar perfil
+                </button>
+              </div>
+            </div>
+
+            <!-- Formulario de edición del perfil -->
+            <div class="collapse" id="editarPerfil">
+              <form class="auth-form profile__form needs-validation" id="profileForm" novalidate>
+                <h2 class="profile__form-title">Editar perfil</h2>
+                <div class="row g-3">
+                  <div class="col-12 col-md-6">
+                    <label class="form-label" for="editName">Nombre visible</label>
+                    <input class="form-control" id="editName" type="text" name="nombre" maxlength="30" minlength="3" required>
+                    <div class="invalid-feedback">El nombre debe tener entre 3 y 30 caracteres.</div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label" for="editCategory">Categoría principal</label>
+                    <select class="form-select" id="editCategory" name="categoria" required>
+                      <option value="">Elige una categoría</option>
+                      <option value="juegos">Juegos</option>
+                      <option value="musica">Música</option>
+                      <option value="charlas">Charlas</option>
+                    </select>
+                    <div class="invalid-feedback">Selecciona una categoría.</div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="editBio">Biografía</label>
+                    <textarea class="form-control" id="editBio" name="bio" rows="3" maxlength="160" aria-describedby="bioCounter"></textarea>
+                    <div class="form-text" id="bioCounter" aria-live="polite">0 / 160 caracteres</div>
+                  </div>
+                  <div class="col-12 d-flex flex-wrap gap-2">
+                    <button class="btn btn-lumina" type="submit">Guardar cambios</button>
+                    <button class="btn btn-lumina btn-lumina--outline" type="button" data-bs-toggle="collapse" data-bs-target="#editarPerfil" aria-controls="editarPerfil">Cancelar</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- Canales seguidos -->
+          <section class="profile-section" aria-labelledby="seguidos-titulo">
+            <h2 class="section-head__title" id="seguidos-titulo">Seguidos</h2>
+            <ul class="follow-list follow-list--grid">
+              <li class="follow-list__item follow-list__item--live"><span class="avatar" aria-hidden="true">NX</span><span class="follow-list__name">NovaX</span><span class="follow-list__status">En directo</span></li>
+              <li class="follow-list__item follow-list__item--live"><span class="avatar" aria-hidden="true">KR</span><span class="follow-list__name">Kraven</span><span class="follow-list__status">En directo</span></li>
+              <li class="follow-list__item"><span class="avatar" aria-hidden="true">MI</span><span class="follow-list__name">Mia</span><span class="follow-list__status">Desconectada</span></li>
+              <li class="follow-list__item follow-list__item--live"><span class="avatar" aria-hidden="true">DJ</span><span class="follow-list__name">DJ Brisa</span><span class="follow-list__status">En directo</span></li>
+              <li class="follow-list__item"><span class="avatar" aria-hidden="true">TO</span><span class="follow-list__name">Toni</span><span class="follow-list__status">Desconectado</span></li>
+            </ul>
+          </section>
+
+          <!-- Directos anteriores -->
+          <section class="profile-section" aria-labelledby="pasados-titulo">
+            <h2 class="section-head__title" id="pasados-titulo">Mis directos anteriores</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3">
+              <div class="col">
+                <article class="stream-card">
+                  <div class="stream-card__thumb stream-card__thumb--niebla">
+                    <span class="stream-card__duration">2:14:08</span>
+                  </div>
+                  <div class="stream-card__body">
+                    <div>
+                      <h3 class="stream-card__title">Terror a oscuras: parte 2</h3>
+                      <p class="stream-card__meta"><time datetime="2026-11-04">Hace 2 días</time> · 1,9 mil visualizaciones</p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="col">
+                <article class="stream-card">
+                  <div class="stream-card__thumb stream-card__thumb--atardecer">
+                    <span class="stream-card__duration">1:32:45</span>
+                  </div>
+                  <div class="stream-card__body">
+                    <div>
+                      <h3 class="stream-card__title">Charla con la comunidad</h3>
+                      <p class="stream-card__meta"><time datetime="2026-10-30">Hace 1 semana</time> · 870 visualizaciones</p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="col">
+                <article class="stream-card">
+                  <div class="stream-card__thumb stream-card__thumb--oceano">
+                    <span class="stream-card__duration">3:01:12</span>
+                  </div>
+                  <div class="stream-card__body">
+                    <div>
+                      <h3 class="stream-card__title">Terror a oscuras: parte 1</h3>
+                      <p class="stream-card__meta"><time datetime="2026-10-23">Hace 2 semanas</time> · 2,4 mil visualizaciones</p>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Barra lateral: notificaciones -->
+        <aside class="col-12 col-lg-3" aria-label="Notificaciones y cuenta">
+          <div class="sidebar">
+            <section class="sidebar__block" id="notificaciones" aria-labelledby="notif-titulo">
+              <h2 class="sidebar__title" id="notif-titulo">Notificaciones</h2>
+              <ul class="notif-list">
+                <li class="notif-list__item"><span class="avatar avatar--sm" aria-hidden="true">LU</span><span><strong>Luna</strong> ha empezado a seguirte.</span></li>
+                <li class="notif-list__item"><span class="avatar avatar--sm" aria-hidden="true">CO</span><span><strong>CodeOwl</strong> ha empezado a seguirte.</span></li>
+                <li class="notif-list__item"><span class="avatar avatar--sm" aria-hidden="true">AR</span><span><strong>Aria</strong> está en directo.</span></li>
+                <li class="notif-list__item"><span class="avatar avatar--sm" aria-hidden="true">NX</span><span><strong>NovaX</strong> ha empezado a seguirte.</span></li>
+              </ul>
+            </section>
+
+            <section class="sidebar__block" aria-labelledby="cuenta-titulo">
+              <h2 class="sidebar__title" id="cuenta-titulo">Cuenta</h2>
+              <p class="sidebar__text">Sesión iniciada como <strong id="accountEmail">usuario@lumina.tv</strong></p>
+              <a class="btn btn-lumina btn-lumina--outline w-100" id="logoutLink" href="login.html">Cerrar sesión</a>
+            </section>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== PIE ===== -->
+  <footer class="site-footer">
+    <div class="container-fluid">
+      <div class="row g-3 align-items-center">
+        <div class="col-12 col-md-4"><p class="site-footer__brand">LUMINA</p></div>
+        <div class="col-12 col-md-4">
+          <nav aria-label="Enlaces del pie">
+            <ul class="site-footer__links">
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="login.html">Acceso</a></li>
+              <li><a href="perfil.html">Perfil</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="col-12 col-md-4"><p class="site-footer__copy">&copy; 2026 LUMINA. Práctica de Diseño de Interfaces Web.</p></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Aviso de envío correcto -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast lumina-toast" id="formToast" role="status" aria-live="polite" aria-atomic="true">
+      <div class="toast-body d-flex align-items-center justify-content-between gap-3">
+        <span id="formToastText">¡Formulario enviado correctamente!</span>
+        <button class="btn-close" type="button" data-bs-dismiss="toast" aria-label="Cerrar aviso"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
