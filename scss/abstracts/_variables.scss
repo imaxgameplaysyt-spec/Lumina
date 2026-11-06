@@ -1,0 +1,135 @@
+// =============================================================
+// _variables.scss
+// Paleta y tipografías extraídas del UI Kit de Figma (LUMINA)
+// y sobrescritura de las variables por defecto de Bootstrap.
+// =============================================================
+
+// ---------- Paleta corporativa (UI Kit) ----------
+$lm-graphite: #2e2e2e;   // Gris grafito (botón "Sin seleccionar")
+$lm-abyss:    #0f2b31;   // Verde azulado profundo
+$lm-teal:     #2b6b7b;   // Teal principal (fondos)
+$lm-lime:     #c5df3a;   // Lima de acento (logo, iconos, bordes)
+
+// Tonos derivados
+$lm-lime-dark:  #a9c21f;
+$lm-teal-light: #3f8a9c;
+$lm-black:      #0a0a0a;
+$lm-white:      #ffffff;
+$lm-lavender:   #f3f1f8;  // Fondo claro (pantallas sin color del Figma)
+$lm-lilac:      #e4ddf4;  // Círculos de avatar en modo claro
+$lm-ink:        #1e1e1e;
+$lm-danger:     #ff6b6b;
+$lm-danger-dark: #e64545;
+
+// ---------- Tipografía ----------
+$lm-font-display: "Seymour One", "Arial Black", sans-serif; // Logo y titulares
+$lm-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+// ---------- Espaciado / forma ----------
+$lm-radius-sm: .5rem;
+$lm-radius:    .875rem;
+$lm-radius-lg: 1.25rem;
+$lm-transition: .2s ease-in-out;
+$lm-header-height: 4.5rem;
+
+// Miniaturas generadas con degradados (sin imágenes externas)
+$lm-thumbs: (
+  violeta:   linear-gradient(135deg, #5b2a86 0%, #c0392b 100%),
+  niebla:    linear-gradient(135deg, #1b1b1b 0%, #4b5d63 100%),
+  atardecer: linear-gradient(135deg, #e96443 0%, #904e95 100%),
+  lima:      linear-gradient(135deg, $lm-lime 0%, $lm-teal 100%),
+  oceano:    linear-gradient(135deg, $lm-abyss 0%, $lm-teal-light 100%),
+  grafito:   linear-gradient(135deg, $lm-graphite 0%, #6b6b6b 100%)
+);
+
+// ---------- Temas (se convierten en custom properties) ----------
+// Cada clave genera una variable CSS --lm-<clave> en _themes.scss
+$lm-themes: (
+  light: (
+    bg:            $lm-lavender,
+    bg-gradient:   linear-gradient(180deg, $lm-lavender 0%, #e9e6f2 100%),
+    surface:       $lm-white,
+    surface-alt:   #ebe7f5,
+    header-bg:     $lm-white,
+    text:          $lm-ink,
+    text-muted:    #5b5966,
+    accent:        $lm-teal,
+    accent-strong: $lm-abyss,
+    on-accent:     $lm-white,
+    border:        #d6d1e3,
+    avatar-bg:     $lm-lilac,
+    avatar-fg:     $lm-ink,
+    chip-bg:       $lm-white,
+    chip-fg:       $lm-ink,
+    shadow:        0 .5rem 1.5rem rgba(30, 30, 30, .08)
+  ),
+  dark: (
+    bg:            $lm-abyss,
+    bg-gradient:   linear-gradient(180deg, $lm-teal 0%, $lm-abyss 55%, #08181c 100%),
+    surface:       $lm-black,
+    surface-alt:   #13363e,
+    header-bg:     $lm-black,
+    text:          #f1f5f4,
+    text-muted:    #a9c0c4,
+    accent:        $lm-lime,
+    accent-strong: $lm-lime,
+    on-accent:     $lm-graphite,
+    border:        rgba($lm-lime, .55),
+    avatar-bg:     transparent,
+    avatar-fg:     $lm-lime,
+    chip-bg:       $lm-graphite,
+    chip-fg:       $lm-white,
+    shadow:        0 .75rem 2rem rgba(0, 0, 0, .45)
+  )
+);
+
+// =============================================================
+// Overrides de Bootstrap (deben declararse ANTES de importarlo)
+// =============================================================
+$primary:   $lm-teal;
+$secondary: $lm-graphite;
+$success:   #4caf7a;
+$danger:    $lm-danger;
+$dark:      $lm-black;
+
+$font-family-sans-serif: $lm-font-body;
+$headings-font-family:   $lm-font-display;
+$headings-font-weight:   400;
+$font-size-base:         1rem;
+
+$border-radius:    $lm-radius-sm;
+$border-radius-lg: $lm-radius;
+
+$body-bg:        $lm-lavender;
+$body-color:     $lm-ink;
+$body-bg-dark:   $lm-abyss;
+$body-color-dark: #f1f5f4;
+$link-color:      $lm-teal;
+$link-color-dark: $lm-lime;
+
+$input-border-radius: $lm-radius-sm;
+$input-padding-y:     .65rem;
+$input-padding-x:     1rem;
+$form-feedback-invalid-color: $lm-danger;
+$form-invalid-color-dark:     $lm-danger;
+$form-invalid-border-color-dark: $lm-danger;
+
+$focus-ring-color: rgba($lm-lime, .5);
+$focus-ring-width: .2rem;
+
+// Utilidades sin !important: la especificidad se controla con la cascada
+$enable-important-utilities: false;
+
+$navbar-padding-y: .75rem;
+$accordion-border-radius: $lm-radius;
+$toast-border-radius: $lm-radius;
+
+// Breakpoints de Bootstrap (se respetan los de por defecto)
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);

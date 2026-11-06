@@ -1,0 +1,384 @@
+// =============================================================
+// pages/_directo.scss
+// Página de un directo: reproductor, información del canal y
+// chat en vivo. Bloques BEM: .player, .stream-info, .chat
+// =============================================================
+
+$lm-chat-height: 34rem;
+
+// ---------- Reproductor ----------
+.player {
+  border: 1px solid var(--lm-border);
+  border-radius: $lm-radius-lg;
+  background-color: $lm-black;
+  overflow: hidden;
+
+  &:fullscreen {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0;
+
+    .player__screen {
+      flex: 1;
+      aspect-ratio: auto;
+    }
+  }
+
+  &__screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background-size: 200% 200%;
+    animation: lm-stream-glow 12s ease-in-out infinite alternate;
+
+    @each $name, $gradient in $lm-thumbs {
+      &--#{$name} {
+        background-image: $gradient;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+
+  // Pausado: la imagen se congela y se oscurece
+  &.is-paused &__screen {
+    animation-play-state: paused;
+    filter: grayscale(.6) brightness(.6);
+  }
+
+  &__viewers {
+    position: absolute;
+    top: .75rem;
+    right: .75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .3rem .65rem;
+    border-radius: $lm-radius-sm;
+    background-color: rgba($lm-black, .7);
+    color: $lm-white;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+
+  &__viewers-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &__paused {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-family: $lm-font-display;
+    font-size: clamp(1.25rem, 4vw, 2.25rem);
+    color: $lm-white;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  // Ecualizador animado: indica que hay sonido
+  &__eq {
+    position: absolute;
+    left: .9rem;
+    bottom: .9rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 1.5rem;
+
+    span {
+      width: 4px;
+      height: 100%;
+      border-radius: 2px;
+      background-color: $lm-lime;
+      transform-origin: bottom;
+      animation: lm-eq .9s ease-in-out infinite alternate;
+
+      @for $i from 1 through 5 {
+        &:nth-child(#{$i}) {
+          animation-delay: -#{$i * .17}s;
+        }
+      }
+    }
+  }
+
+  &.is-muted &__eq,
+  &.is-paused &__eq {
+    visibility: hidden;
+  }
+
+  // Barra de controles
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .75rem;
+    background-color: $lm-black;
+    color: $lm-white;
+  }
+
+  &__btn {
+    @include circle(2.5rem);
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    color: $lm-lime;
+    @include smooth(background-color, transform);
+    @include focus-ring($lm-lime);
+
+    &:hover {
+      background-color: rgba($lm-lime, .15);
+      transform: scale(1.08);
+    }
+  }
+
+  &__icon {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  // Iconos alternativos según el estado
+  &__icon--play,
+  &__icon--muted {
+    display: none;
+  }
+
+  &.is-paused &__icon--pause,
+  &.is-muted &__icon--volume {
+    display: none;
+  }
+
+  &.is-paused &__icon--play,
+  &.is-muted &__icon--muted {
+    display: block;
+  }
+
+  &__volume {
+    display: none;
+    width: 6rem;
+    accent-color: $lm-lime;
+
+    @include respond-to(sm) {
+      display: block;
+    }
+  }
+
+  &__time {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-left: .5rem;
+    font-size: .85rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__dot {
+    width: .55rem;
+    height: .55rem;
+    border-radius: 50%;
+    background-color: $lm-danger;
+    animation: lm-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+// ---------- Información del directo ----------
+.stream-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--lm-border);
+  border-radius: $lm-radius;
+  background-color: var(--lm-surface);
+
+  &__avatar {
+    box-shadow: 0 0 0 3px $lm-danger;
+  }
+
+  &__text {
+    flex: 1 1 14rem;
+    min-width: 0;
+  }
+
+  &__title {
+    margin-bottom: .2rem;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  }
+
+  &__streamer {
+    margin-bottom: .35rem;
+    color: var(--lm-accent);
+    font-weight: 700;
+  }
+
+  &__meta {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--lm-text-muted);
+  }
+
+  &__tag {
+    display: inline-block;
+    margin-right: .6rem;
+    padding: .1rem .55rem;
+    border-radius: $lm-radius-sm;
+    background-color: var(--lm-surface-alt);
+    color: var(--lm-text);
+    font-weight: 600;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+}
+
+// Botón Seguir en estado "Siguiendo"
+.btn-lumina.is-following {
+  --bs-btn-color: var(--lm-accent);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--lm-accent);
+  --bs-btn-hover-color: var(--lm-on-accent);
+  --bs-btn-hover-bg: var(--lm-accent);
+}
+
+// ---------- Chat ----------
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 26rem;
+  border: 1px solid var(--lm-accent);
+  border-radius: $lm-radius;
+  background-color: var(--lm-surface);
+  overflow: hidden;
+
+  @include respond-to(lg) {
+    position: sticky;
+    top: $lm-header-height + 1rem;
+    height: $lm-chat-height;
+  }
+
+  &__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--lm-border);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  &__users {
+    font-size: .75rem;
+    color: var(--lm-text-muted);
+  }
+
+  // Zona con scroll que contiene la lista de mensajes
+  &__log {
+    flex: 1;
+    min-height: 0;
+    padding: 1rem 1.25rem;
+    overflow-y: auto;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: .875rem;
+    word-break: break-word;
+  }
+
+  &__msg {
+    animation: lm-fade-in .25s ease-out;
+
+    &--system {
+      color: var(--lm-text-muted);
+      font-style: italic;
+    }
+
+    &--own {
+      padding: .35rem .6rem;
+      border-left: 3px solid var(--lm-accent);
+      background-color: var(--lm-surface-alt);
+      border-radius: 0 $lm-radius-sm $lm-radius-sm 0;
+    }
+  }
+
+  &__author {
+    color: var(--lm-accent);
+  }
+
+  &__form {
+    padding: .75rem;
+    border-top: 1px solid var(--lm-border);
+
+    .form-control {
+      border: 1px solid var(--lm-accent);
+      background-color: transparent;
+      color: var(--lm-text);
+
+      &::placeholder {
+        color: var(--lm-text-muted);
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 .2rem $focus-ring-color;
+      }
+    }
+  }
+
+  &__send {
+    --bs-btn-padding-x: .9rem;
+  }
+
+  &__send-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}
+
+// ---------- Animaciones ----------
+@keyframes lm-stream-glow {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+@keyframes lm-eq {
+  from { transform: scaleY(.2); }
+  to   { transform: scaleY(1); }
+}
+
+@keyframes lm-pulse {
+  50% { opacity: .3; }
+}
+
+@keyframes lm-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player__eq span,
+  .player__dot,
+  .chat__msg {
+    animation: none;
+  }
+}

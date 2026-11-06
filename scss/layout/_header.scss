@@ -1,0 +1,160 @@
+// =============================================================
+// _header.scss
+// Cabecera fija con navbar responsive (menú hamburguesa).
+// Bloque BEM: .site-header
+// =============================================================
+
+.site-header {
+  background-color: var(--lm-header-bg);
+  border-bottom: 1px solid var(--lm-border);
+  box-shadow: var(--lm-shadow);
+  @include smooth(background-color, border-color);
+
+  &__nav {
+    min-height: $lm-header-height;
+  }
+
+  &__brand {
+    font-family: $lm-font-display;
+    font-size: 1.6rem;
+    letter-spacing: .04em;
+    color: var(--lm-accent);
+    @include focus-ring;
+
+    &:hover,
+    &:focus {
+      color: var(--lm-accent);
+    }
+
+    @include respond-to(lg) {
+      font-size: 1.85rem;
+    }
+  }
+
+  // Botón hamburguesa con colores corporativos
+  &__toggler {
+    border: 2px solid var(--lm-accent);
+    border-radius: $lm-radius-sm;
+    padding: .35rem .6rem;
+    @include focus-ring;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    .navbar-toggler-icon {
+      background-image: none;
+      position: relative;
+      width: 1.5rem;
+      height: 2px;
+      background-color: var(--lm-accent);
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--lm-accent);
+        @include smooth(transform, top);
+      }
+
+      &::before { top: -7px; }
+      &::after  { top: 7px; }
+    }
+
+    // Estado abierto: el icono se transforma en una X
+    &[aria-expanded="true"] .navbar-toggler-icon {
+      background-color: transparent;
+
+      &::before { top: 0; transform: rotate(45deg); }
+      &::after  { top: 0; transform: rotate(-45deg); }
+    }
+  }
+
+  .nav-link {
+    position: relative;
+    font-weight: 500;
+    color: var(--lm-text);
+    border-radius: $lm-radius-sm;
+    @include smooth(color, background-color);
+    @include focus-ring;
+
+    &:hover {
+      color: var(--lm-accent);
+    }
+
+    &.active {
+      color: var(--lm-accent);
+      font-weight: 700;
+    }
+
+    // Subrayado animado solo en escritorio
+    @include respond-to(lg) {
+      &::after {
+        content: "";
+        position: absolute;
+        left: var(--bs-navbar-nav-link-padding-x);
+        right: var(--bs-navbar-nav-link-padding-x);
+        bottom: .2rem;
+        height: 2px;
+        background-color: var(--lm-accent);
+        transform: scaleX(0);
+        @include smooth(transform);
+      }
+
+      &:hover::after,
+      &.active::after {
+        transform: scaleX(1);
+      }
+    }
+  }
+
+  &__actions {
+    flex-direction: row;
+    gap: .5rem;
+    padding-bottom: .5rem;
+
+    @include respond-to(lg) {
+      padding-bottom: 0;
+    }
+  }
+}
+
+// Buscador de la cabecera
+.site-search {
+  position: relative;
+  flex: 1 1 auto;
+  max-width: 28rem;
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    left: .9rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    transform: translateY(-50%);
+    color: var(--lm-text-muted);
+    pointer-events: none;
+  }
+
+  &__input {
+    padding-left: 2.6rem;
+    border-radius: 2rem;
+    border: 1px solid var(--lm-border);
+    background-color: var(--lm-surface-alt);
+    color: var(--lm-text);
+
+    &::placeholder {
+      color: var(--lm-text-muted);
+    }
+
+    &:focus {
+      border-color: var(--lm-accent);
+      background-color: var(--lm-surface-alt);
+      color: var(--lm-text);
+      box-shadow: 0 0 0 .2rem $focus-ring-color;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+// =============================================================
+// style.scss — Archivo principal de LUMINA
+// Se compila a /css/style.css (Live Sass Compiler o npm run build)
+//
+// Orden de importación:
+//   1. Abstracts propios (variables que sobrescriben Bootstrap)
+//   2. Bootstrap 5.3 desde sus fuentes locales (/scss/vendor)
+//   3. Mixins, temas, base, layout, componentes y páginas propias
+// =============================================================
+
+// 1. Configuración propia (antes de Bootstrap para sobrescribir !default)
+@import "abstracts/variables";
+
+// 2. Bootstrap: núcleo de configuración
+@import "vendor/bootstrap/functions";
+@import "vendor/bootstrap/variables";
+@import "vendor/bootstrap/variables-dark";
+@import "vendor/bootstrap/maps";
+@import "vendor/bootstrap/mixins";
+@import "vendor/bootstrap/utilities";
+
+// Bootstrap: solo los módulos que usa la web
+@import "vendor/bootstrap/root";
+@import "vendor/bootstrap/reboot";
+@import "vendor/bootstrap/type";
+@import "vendor/bootstrap/containers";
+@import "vendor/bootstrap/grid";
+@import "vendor/bootstrap/forms";
+@import "vendor/bootstrap/buttons";
+@import "vendor/bootstrap/transitions";
+@import "vendor/bootstrap/nav";
+@import "vendor/bootstrap/navbar";
+@import "vendor/bootstrap/accordion";
+@import "vendor/bootstrap/close";
+@import "vendor/bootstrap/toasts";
+@import "vendor/bootstrap/helpers";
+@import "vendor/bootstrap/utilities/api";
+
+// 3. Código propio
+@import "abstracts/mixins";
+@import "base/themes";
+@import "base/base";
+@import "layout/header";
+@import "layout/footer";
+@import "components/botones";
+@import "components/cards";
+@import "components/formularios";
+@import "components/sidebar";
+@import "components/accordion";
+@import "pages/login";
+@import "pages/perfil";
+@import "pages/directo";

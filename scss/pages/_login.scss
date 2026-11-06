@@ -1,0 +1,46 @@
+// =============================================================
+// pages/_login.scss
+// Página de acceso: presentación + tarjeta de login/registro.
+// Bloque BEM: .login-intro
+// =============================================================
+
+.login-page {
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - #{$lm-header-height} - 9rem);
+}
+
+.login-intro {
+  &__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  &__text {
+    color: var(--lm-text-muted);
+    font-size: 1.05rem;
+  }
+
+  &__list {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    font-weight: 500;
+  }
+
+  &__icon {
+    @include circle(2.75rem);
+    padding: .55rem;
+    border: 2px solid var(--lm-accent);
+    color: var(--lm-accent);
+  }
+}

@@ -1,0 +1,132 @@
+// =============================================================
+// pages/_perfil.scss
+// Página de perfil: cabecera con avatar, estadísticas, acciones
+// y formulario de edición. Bloque BEM: .profile
+// =============================================================
+
+.profile {
+  border: 1px solid var(--lm-border);
+  border-radius: $lm-radius-lg;
+  background-color: var(--lm-surface);
+  box-shadow: var(--lm-shadow);
+  overflow: hidden;
+
+  &__banner {
+    height: 7rem;
+    background:
+      radial-gradient(circle at 80% 20%, rgba($lm-lime, .55) 0%, transparent 40%),
+      linear-gradient(135deg, $lm-teal 0%, $lm-abyss 100%);
+
+    @include respond-to(md) {
+      height: 10rem;
+    }
+  }
+
+  // Móvil: todo centrado en columna. Escritorio: avatar + info en fila
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0 1.25rem 1.5rem;
+    text-align: center;
+
+    @include respond-to(md) {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      padding: 0 2rem 2rem;
+      text-align: left;
+    }
+  }
+
+  &__avatar {
+    margin-top: -3.5rem;
+    border-width: 4px;
+    background-color: var(--lm-surface);
+  }
+
+  // El flex-basis solo en fila: en columna actuaría como altura
+  &__info {
+    @include respond-to(md) {
+      flex: 1 1 16rem;
+    }
+  }
+
+  &__name {
+    margin-bottom: .1rem;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    word-break: break-word;
+  }
+
+  &__handle {
+    margin-bottom: .5rem;
+    color: var(--lm-accent);
+    font-weight: 600;
+  }
+
+  &__bio {
+    margin: 0;
+    max-width: 40rem;
+    color: var(--lm-text-muted);
+  }
+
+  &__stats {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__stat-value {
+    font-family: $lm-font-display;
+    font-size: 1.5rem;
+    color: var(--lm-accent);
+  }
+
+  &__stat-label {
+    font-size: .8rem;
+    color: var(--lm-text-muted);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .75rem;
+    width: 100%;
+
+    @include respond-to(md) {
+      justify-content: flex-start;
+    }
+  }
+
+  &__form {
+    padding: 1.5rem 1.25rem 2rem;
+    border-top: 1px solid var(--lm-border);
+
+    @include respond-to(md) {
+      padding: 2rem;
+    }
+  }
+
+  &__form-title {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+  }
+}
+
+.profile-section {
+  margin-top: 2.5rem;
+
+  .section-head__title {
+    margin-bottom: 1.25rem;
+  }
+}

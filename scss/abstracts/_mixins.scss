@@ -1,0 +1,71 @@
+// =============================================================
+// _mixins.scss
+// Mixins reutilizables: media queries, foco accesible, temas.
+// =============================================================
+
+// Media query mobile-first a partir de un breakpoint de Bootstrap.
+// Uso: @include respond-to(lg) { ... }
+@mixin respond-to($breakpoint) {
+  @include media-breakpoint-up($breakpoint) {
+    @content;
+  }
+}
+
+// Media query para pantallas por debajo de un breakpoint.
+@mixin respond-below($breakpoint) {
+  @include media-breakpoint-down($breakpoint) {
+    @content;
+  }
+}
+
+// Anillo de foco visible solo para navegación por teclado.
+@mixin focus-ring($color: var(--lm-accent), $offset: 3px) {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 3px solid $color;
+    outline-offset: $offset;
+  }
+}
+
+// Transición estándar para microinteracciones.
+@mixin smooth($props...) {
+  transition-property: $props;
+  transition-duration: .2s;
+  transition-timing-function: ease-in-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// Elevación al pasar el ratón (tarjetas).
+@mixin lift($distance: -4px) {
+  @include smooth(transform, box-shadow);
+
+  &:hover {
+    transform: translateY($distance);
+    box-shadow: var(--lm-shadow);
+  }
+}
+
+// Estilos que solo aplican con un tema concreto.
+// Uso: @include theme(light) { ... }
+@mixin theme($name) {
+  [data-bs-theme="#{$name}"] & {
+    @content;
+  }
+}
+
+// Círculo centrado (avatares, botones de icono).
+@mixin circle($size) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+}

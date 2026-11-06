@@ -1,0 +1,53 @@
+// =============================================================
+// _footer.scss
+// Pie de página. Bloque BEM: .site-footer
+// =============================================================
+
+.site-footer {
+  padding-block: 2rem;
+  background-color: var(--lm-header-bg);
+  border-top: 1px solid var(--lm-border);
+  text-align: center;
+
+  @include respond-to(md) {
+    text-align: left;
+  }
+
+  &__brand {
+    margin: 0;
+    font-family: $lm-font-display;
+    font-size: 1.4rem;
+    color: var(--lm-accent);
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    a {
+      color: var(--lm-text);
+      text-decoration: none;
+      @include smooth(color);
+
+      &:hover {
+        color: var(--lm-accent);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__copy {
+    margin: 0;
+    font-size: .875rem;
+    color: var(--lm-text-muted);
+
+    @include respond-to(md) {
+      text-align: right;
+    }
+  }
+}
